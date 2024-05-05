@@ -3,6 +3,7 @@ import time
 import logging
 from PIL import Image
 from graph_generator import graph_generator
+from utils.file_utils import file_utils
 
 # Set to the name of your e-ink device (https://github.com/robweber/omni-epd#displays-implemented)
 DISPLAY_TYPE = "waveshare_epd.epd7in5_V2"
@@ -40,6 +41,9 @@ if not DEBUG:
     epd.clear()
     epd.sleep()
 
+file_utils = file_utils()
+loop_counter = 0
+
 while True:
     try:
         log.info("Generating artwork from samila...")
@@ -62,8 +66,18 @@ while True:
         epd.sleep()
         log.info("Rendered!")
     
+    file_utils.save_art(image)
+
     img_buf.close()
     del graph
+    
+    if loop_counter == 10:
+        # perform some maintence for every 10th run
+        # mostly just deleting off old artwork from the save directory
+        log.info("Maintaince Loop!")
+        loop_counter=0
+        file_utils.clean_dir()
 
+    loop_counter += 1
     log.info("Sleeping for " + str(SLEEP) + " seconds")
     time.sleep(SLEEP)

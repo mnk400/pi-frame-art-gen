@@ -19,15 +19,15 @@ class graph_generator:
         """
         This method generates random art using the library samila
         """
-        
+
         # Method 1 to generate a random uniform destribution
         def f1(x, y):
-            result = random.uniform(-2, 3) * x**2  - math.sin(y**2) + abs(y-x)
+            result = random.uniform(-2, 3) * x**2 - math.sin(y**2) + abs(y - x)
             return result
 
         # Method 2 to generate a random uniform destribution
         def f2(x, y):
-            result = random.uniform(-3, 1) * y**3 - math.cos(x**2) + 2*x
+            result = random.uniform(-3, 1) * y**3 - math.cos(x**2) + 2 * x
             return result
 
         g = GenerativeImage(f1, f2)
@@ -39,14 +39,19 @@ class graph_generator:
             step = random.randrange(40, 100, 1) / 10000
             stop = 0
         else:
-            start=random.randrange(-4, 0, 1)
-            step=random.randrange(90, 200, 1) / 10000
-            stop=random.randrange(0, 5, 1)
+            start = random.randrange(-4, 0, 1)
+            step = random.randrange(90, 200, 1) / 10000
+            stop = random.randrange(0, 5, 1)
 
-        g.generate() if random.random() > 0.8 else g.generate(start=start*math.pi, step=step, stop=stop)
+        g.generate() if random.random() > 0.8 else g.generate(
+            start=start * math.pi, step=step, stop=stop)
 
         g.size = [self.width, self.height]
-        g.plot(color="white", bgcolor="black", projection=projection, spot_size=0.5)
+        g.plot(
+            color="white",
+            bgcolor="black",
+            projection=projection,
+            spot_size=0.5)
 
         img_buf = io.BytesIO()
         plt.savefig(img_buf, format='jpg')
